@@ -193,7 +193,7 @@ def referral_home(request, ref_code=None):
 
     return render(request, "ndio_app/referral_home.html")
 
-def create_client(first_name, last_name, email, client_password, id_number, address, city, postal_code, suburb):
+def create_client(first_name, last_name, email, client_password, id_number, address, city, postal_code, suburb, province):
     """ This function creates a user on the api end
     using the information retrieved from a form. 
     It accepts the following parameters:
@@ -295,8 +295,6 @@ def hosting_view(request):
 def fibre_view(request):
     return render(request, 'ndio_app/fibre.html')
 
-
-
 @login_required
 def order_details(request):
     """Handles order details submission."""
@@ -329,6 +327,7 @@ def order_details(request):
             client_city = order.city
             postal_code = order.postal_code
             suburb = order.suburb
+            province = order.province
 
             create_client(
                 client_first_name,
@@ -339,7 +338,8 @@ def order_details(request):
                 client_address,
                 client_city,
                 postal_code,
-                suburb
+                suburb, 
+                province
                 )
             order.save()
 
