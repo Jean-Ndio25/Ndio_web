@@ -5,9 +5,8 @@ from django.http import JsonResponse
 from django.shortcuts import render, redirect
 from django.contrib.auth import login, logout
 from django.contrib.auth.forms import AuthenticationForm
-from ndio_app.models import Payment, User_Detail
-from ndio_app.models import User
-from .forms import PaymentForm, RegisterForm, UserDetailForm, OrderForm
+from ndio_app.models import Payment, UserDetail, User, FibreProduct, NetworkProvider
+from .forms import CustomUserCreationForm, PaymentForm, UserDetailForm, OrderForm
 from . import forms
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
@@ -46,23 +45,20 @@ def get_coordinates(address):
 
     if response.status_code == 200:
         location = response.json()["results"][0]["geometry"]["location"]
-        print(location["lat"], location["lng"])
         return (location["lat"], location["lng"])
     else:
         print("Failed to get coordinates.")
         return None, None
 
-providers_list = []
 # Check if fibre is available in that area
 def check_fibre_availability(address):
     """This function checks if fibre is available in the user's address.
-        It accepts 3 parameters: 
-        - The latitude coordinate (str)
-        - The longitude coordinate (str)
+        It accepts 1 parameters: 
         - address of the user (str)
 
-        And it returns a message which confirms if fibre is available in your area or not"""
-    
+        And it returns a list of available network providers for that area"""
+
+    providers_list = []    # Initialize list of prviders
     session_id = get_session()
     latitude_coordinate, longitude_coordinate = get_coordinates(address=address)
     url = f"https://apitest.axxess.co.za/calls/rsapi/checkFibreAvailability.json?"
@@ -83,33 +79,64 @@ def check_fibre_availability(address):
     if response.status_code == 200:
         network_providers = response.json()#["arrAvailableProvidersGuids"]
         
+        # Loop through list of 
         for providers in network_providers["arrAvailableProvidersGuids"]:
             provider_id = (f"{providers['guidNetworkProviderId']}")
             providers_list.append(provider_id)
-            print(providers_list)
-        print(providers_list)
         return providers_list
     else:
         return None
 
-print(providers_list)    
 # Get the network provider products
 def get_network_provider_products(address):
-    session_id = get_session()
-    network_provider_id = check_fibre_availability(address=address)
+    network_providers_list = check_fibre_availability(address=address)
+    products_list = []  # Initialize empty list of responses
+ 
+    # Authentication
+    username = "ResellerAdmin"
+    password = "jFbd5lg7Djfbn48idmlf4Kd"
+
+    # Loop through list if network provider IDs
+    # Get the products of each network provider
+    if network_providers_list is not None:
+        for items in network_providers_list:
+            session_id = get_session()
+            response = requests.get(f"https://apitest.axxess.co.za/calls/rsapi/getNetworkProviderProducts.json?strSessionId={session_id}&guidNetworkProviderId={items}", auth=(username, password))
+            response = response.json()
+            for products in response["arrNetworkProviderProducts"]:
+                print(products)
+                products_list.append(products)       
+        return products_list
+    else:
+        return None
     
-    pass
-
-
 def home(request):
     request.session.flush()
+    context={}
+    network_provider_products_list = []
     if request.method == "POST":
+        fibre_is_available = False
         address = request.POST.get("address")
-        check_fibre_availability(address=address)
+        network_providers_list = check_fibre_availability(address=address)
 
-    return render(request, "ndio_app/home.html")
-      
+        # Create request session for address
+        request.session["address"] = address
 
+        # Check if network providers list is appended
+        if network_providers_list is not None:
+            fibre_is_available = True
+            network_provider_products_list = get_network_provider_products(address=address)
+        else:
+            fibre_is_available = False
+            network_providers_list = []
+            
+        context = {
+            "products" : network_provider_products_list,
+            "fibre_is_available": fibre_is_available,
+            "address": address
+        }
+    return render(request, "ndio_app/home.html", context=context)
+        
 def referral_home(request, ref_code=None):
     """Home view with referral tracking."""
     # Use ref_code from URL if provided
@@ -118,7 +145,7 @@ def referral_home(request, ref_code=None):
     if ref_code:
         try:
             # Check if the referral code exists in the database
-            referrer = User_Detail.objects.get(code=ref_code)
+            referrer = UserDetail.objects.get(code=ref_code)
             request.session['referral_code'] = ref_code  # Store ref_code in session
             referrer_id = referrer.user.id  
             request.session['referrer'] = referrer_id # Store referrer in session    
@@ -127,7 +154,7 @@ def referral_home(request, ref_code=None):
             print(f"Referrer code: {referrer_id} stored in session")
             print(f"Referrer: {referrer_id}")
             print(f"Session items After: {request.session.items()}")
-        except User_Detail.DoesNotExist:
+        except UserDetail.DoesNotExist:
             print(f"Invalid referral code: {ref_code}")
 
     mtn_products = get_mtn_lte_products()
@@ -166,7 +193,7 @@ def referral_home(request, ref_code=None):
 
     return render(request, "ndio_app/referral_home.html")
 
-def create_user(first_name, last_name, email, client_password, id_number, address, city, postal_code):
+def create_client(first_name, last_name, email, client_password, id_number, address, city, postal_code, suburb):
     """ This function creates a user on the api end
     using the information retrieved from a form. 
     It accepts the following parameters:
@@ -177,6 +204,7 @@ def create_user(first_name, last_name, email, client_password, id_number, addres
         - strPassword
         - strIdNumber
         - strAddress
+        - strSuburb
         - strCity
         - intPostalCode """
     
@@ -191,6 +219,7 @@ def create_user(first_name, last_name, email, client_password, id_number, addres
               "strPassword": client_password,
               "strIdNumber": id_number,
               "strAddress": address,
+              "strSuburb" : suburb,
               "strCity": city,
               "intPostalCode": postal_code
               }
@@ -208,70 +237,26 @@ def create_user(first_name, last_name, email, client_password, id_number, addres
         print("User not created")
 
 def register_view(request):
+    # Getting the product ID
+    fibre_product = request.GET.get("product_id")
+    request.session["fibre_product"] = fibre_product
+
     if request.method == "POST":
-        form = RegisterForm(request.POST)
+        # Username validation
+        form = CustomUserCreationForm(request.POST)
         if form.is_valid():
-            user = form.save()
-            login(request, user)  # Log in the user immediately
-            
-            # Capture user information for client creation on API
-            request.session['first_name'] = user.first_name
-            request.session['last_name'] = user.last_name
-            request.session['email'] = user.email
+            user = form.save(commit=False)
+            messages.success(request, "Account created successfuly")
             request.session['password'] = user.password
-           
+            user.save()
+            login(request, user)  # Log in the user immediately
             return redirect('order_details')  # Redirect to the desired page
         else:
             # Add error messages for invalid form
-            for field, errors in form.errors.items():
-                for error in errors:
-                    messages.error(request, f"{field.capitalize()}: {error}")
+            messages.error(request, "Form is invalid. Please try again.")
     else:
-        form = RegisterForm()
-        selected_product = request.GET.get('selected_product')
-        request.session['selected_product'] = selected_product
-
+        form = CustomUserCreationForm()
     return render(request, 'accounts/register.html', {'form': form})
-
-def referral_register_view(request):
-    if request.method == "POST":
-        form = RegisterForm(request.POST)
-        if form.is_valid():
-            user = form.save()
-            login(request, user)  # Log in the user immediately
-
-            # Capture user information for client creation on API
-            request.session['first_name'] = user.first_name
-            request.session['last_name'] = user.last_name
-            request.session['email'] = user.email
-            request.session['password'] = user.password
-            
-        return redirect("user_account")  # Redirect to the desired page
-    else:
-        # Handle referral code
-        ref_code = request.session.get('referral_code')
-        if ref_code:
-            try:
-                referring_user = User_Detail.objects.get(code=ref_code).user
-                user.referral.referred_by = referring_user
-                user.referral.save()
-                referring_user.referral.save()
-                print("ref_code saved!!")
-                    
-            except User_Detail.DoesNotExist:
-                messages.error(request, "Invalid referral code.")
-
-        else:
-            # Add error messages for invalid form
-            for field, errors in form.errors.items():
-                for error in errors:
-                    messages.error(request, f"{field.capitalize()}: {error}")
-
-        form = RegisterForm()
-        ref_code = request.GET.get('ref_code')
-        request.session['ref_code'] = ref_code
-
-    return render(request, 'accounts/referral_register.html', {'form': form, 'ref_code': ref_code})
 
 def login_view(request):
     if request.method == "POST":
@@ -295,7 +280,7 @@ def login_view_order(request):
         form = AuthenticationForm()
     return render(request, 'accounts/login_order.html', {'form': form})
 
-def logout_view(request):
+def logout_view(request):   
     logout(request)
     request.session.flush() # clear session
     return redirect('home')  # Redirect to the home page after logout
@@ -310,71 +295,75 @@ def hosting_view(request):
 def fibre_view(request):
     return render(request, 'ndio_app/fibre.html')
 
+
+
 @login_required
 def order_details(request):
     """Handles order details submission."""
-    # Store referrer id 
     referrer_id = request.session.get('referrer')
-    print(referrer_id)
-
-    # Get referrer as user instance
-    # By using the referrer_id
-    if referrer_id:
-        referrer = User.objects.get(id=referrer_id)
-        print(referrer)
-    else:
-        referrer = None
+    referrer = User.objects.get(id=referrer_id) if referrer_id else None
 
     if request.method == "POST":
+        print(f"Request Data: {request.POST}")
         form = forms.UserDetailForm(request.POST)
         form_order = forms.OrderForm(request.POST)
 
-
         if form.is_valid() and form_order.is_valid():
-            client = form.save(commit=False)
-            order = form_order.save(commit=False)
 
+            client = form.save(commit=False)
             client.user = request.user
-            # populate referrered_by field with uer instance of referrer
-            client.referred_by = referrer
-            # set the id_number of client
-            order.id_number = client
-            
-            client_first_name = request.session.get('first_name')
-            client_last_name = request.session.get('last_name')
-            client_email = "alhiyha@ndio.co.za" 
-            client_password = request.session.get('password')
+            client.referred_by = referrer  
+            client_first_name = (client.first_name)
+            client_last_name = (client.last_name)
+            client_email = "client@ndio.co.za"
+            # Add client phone
+            client_password = request.session.get("password")
             client_id_number = client.id_number
+            
+            client.save()  
+
+            order = form_order.save(commit=False)
+            order.client = request.user  # Assign client
+            # Get data needed for createclient func
             client_address = order.address
             client_city = order.city
-            client_postal_code = order.postal_code
+            postal_code = order.postal_code
+            suburb = order.suburb
 
-            """create_user(client_first_name, client_last_name, client_email, client_password, client_id_number, client_address,
-                        client_city, client_postal_code)"""
-            client.save()
+            create_client(
+                client_first_name,
+                client_last_name,
+                client_email,
+                client_password,
+                client_id_number,
+                client_address,
+                client_city,
+                postal_code,
+                suburb
+                )
             order.save()
-            
-        return redirect('payment_view')  # Redirect to another page 
-    
+
+            return redirect("payment_view")
+
+        else:
+            print("User Detail Form Errors:", form.errors)
+            print("Order Form Errors:", form_order.errors)
+
     else:
-        # If GET request or invalid form, show the form again
-        address = request.session.get('address', '')  # Provide default empty string if None
-        address_split = address.split(', ')
-        city = address_split[2]
-        print(request.session.items())
-        # setting initial values for forms
-        order_initial_data = {'address': address, 'city':city}
+        # GET request - Prefill form
+        address = request.session.get('address', '')
+        address_split = address.split(', ') if address else [""] * 4
+        city = address_split[2] if len(address_split) > 2 else ""
+
+        order_initial_data = {'address': address, 'city': city}
         user_detail_intial_data = {'referred_by': referrer}
-        
+
         form = forms.UserDetailForm(initial=user_detail_intial_data)
         form_order = forms.OrderForm(initial=order_initial_data)
 
-        context = {
-            'form': form, 
-            'form_order': form_order,
-        }
+        print(f"Preloading Forms: {form.errors}, {form_order.errors}")
 
-        return render(request, 'ndio_app/order_details.html', context=context)
+    return render(request, 'ndio_app/order_details.html', {'form': form, 'form_order': form_order})
     
 @login_required
 def user_account(request):
@@ -387,7 +376,7 @@ def user_account(request):
     print(status)
     
     # Get user referral code using id, handling case where user has no entry
-    ref_code = User_Detail.objects.filter(user_id=user_id).first()
+    ref_code = UserDetail.objects.filter(user_id=user_id).first()
     
     if not ref_code:
         print('No referral code found for this user.')
@@ -396,11 +385,7 @@ def user_account(request):
         'ref_code': ref_code
     }
 
-    if status == 'success':  # Ensure the payment was successful
-        Payment.objects.filter(payment_id=payment_id).update(status="Paid")
-        return render(request, 'accounts/user_account.html', context)  # Render the template with context
-    else:
-        return redirect('unsuccessful_payment')  # Handle unsuccessful cases
+    return render(request, "accounts/user_account.html")
 
 def unsuccessful_payment(request):
     return render(request, "ndio_app/unsuccessful.html")
@@ -453,44 +438,28 @@ def process_payment(request):
 
 @csrf_exempt  # Avoid this if possible; use CSRF tokens.
 def payment_view(request):
+    fibre_product_id = request.session.get("fibre_product")
 
-    products = {
-        '15308809-e706-11ec-bb2d-0050568d6656': 'Telkom Mobile Off-Peak Uncapped Smart Combo',
-        '15308463-e706-11ec-bb2d-0050568d6656': 'Telkom Mobile 10Mbps Uncapped Smart Combo',
-        '153085ed-e706-11ec-bb2d-0050568d6656': 'Telkom Mobile 20Mbps Uncapped Smart Combo',
-        '55ce17ad-9616-11ec-bb2d-0050568d6656': 'MTN LTE 10Mbps Uncapped Smart Combo',
-        '55ce1813-9616-11ec-bb2d-0050568d6656': 'MTN LTE 20Mbps Uncapped Smart Combo',
-        '55ce187e-9616-11ec-bb2d-0050568d6656': 'MTN LTE 50Mbps Uncapped Smart Combo',
-    }
+    # Check if the product id was given
+    if not fibre_product_id:
+        return JsonResponse({"status": "error", "message": "No product selected"})
+    else:
+        product = FibreProduct.objects.filter(product_id=fibre_product_id).first()
+        product_price = product.price
+        total_price = product_price + 300
+        public_key = settings.YOCO_PUBLIC_KEY
+        initial_data = {'amount': total_price}
+        form = PaymentForm(initial=initial_data)
+        if form.is_valid():
+            form = form.save()
 
-    prices = {
-        '15308809-e706-11ec-bb2d-0050568d6656': 800,
-        '15308463-e706-11ec-bb2d-0050568d6656': 554,
-        '153085ed-e706-11ec-bb2d-0050568d6656': 769,
-        '55ce17ad-9616-11ec-bb2d-0050568d6656': 890,
-        '55ce1813-9616-11ec-bb2d-0050568d6656': 565,
-        '55ce187e-9616-11ec-bb2d-0050568d6656': 500
-    }
-
-    selected_product = request.session.get('selected_product')
-    if not selected_product:
-        return JsonResponse({'status': 'error', 'message': 'No product selected'})
-
-    product_name = products.get(selected_product, 'Unknown Product')
-    product_price = prices.get(selected_product, 0)
-    total_price = product_price + 300
-    public_key = settings.YOCO_PUBLIC_KEY
-
-    initial_data = {'amount': total_price}
-    form = PaymentForm(initial=initial_data)
-
-    context = {
-        'yoco_public_key': public_key,
-        'currency': 'ZAR',
-        'product_name': product_name,
-        'product_price': product_price,
-        'form': form,
-        'amount': total_price
-    }
+        context = {
+            'yoco_public_key': public_key,
+            'currency': 'ZAR',
+            'product_name': product,
+            'product_price': product_price,
+            'form': form,
+            'amount': total_price
+        }
 
     return render(request, 'ndio_app/payments.html', context)

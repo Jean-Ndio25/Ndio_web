@@ -370,34 +370,27 @@
     </div>
 
     <div class="row text-center justify-content-center">
-    {% if results %}
+    {% if fibre_is_available == True %}
         <h5>Results for {{ address }}</h5>
         <div class="col-md-3">
-            <a href= "#" class="text-decoration-none" id="fibre_link"><div class="card custom-card">
+            <a href= "#fibre" class="text-decoration-none" id="fibre_link"><div class="card custom-card">
                 <div class="card-body bg-danger text-white">
                     <p class="h2">FIBRE</p>
-                    {{ results.fibre.strMessage }}
+                    <h5>Fibre is available in your area</h5>
                 </div>
             </div>
         </div></a>
+        <!-- If fibre is not available -->
+    {% else %}
+        <h5>Results for {{ address }}</h5>
         <div class="col-md-3">
-            <a href= "#mtn_packages" class="text-decoration-none" id="mtn_link" onclick="showMtnPackages()"><div class="card custom-card">
-                <div class="card-body bg-warning text-white">
-                    <p class="h2">MTN LTE</p>
-                    {{ results.mtn_lte.strMessage }}
+            <a href= "#fibre" class="text-decoration-none disable" id="fibre_link"><div class="card custom-card">
+                <div class="card-body bg-danger text-white">
+                    <p class="h2">FIBRE</p>
+                    <h5>Fibre is NOT available in your area</h5>
                 </div>
-            </div></a>
-        </div>
-        <div class="col-md-3">
-            <a href= "#telkom_packages" class="text-decoration-none" id="telkom_link" onclick="showTelkomPackages()"><div class="card custom-card">
-                <div class="card-body bg-info text-white">
-                    <p class="h2">TELKOM LTE</p>
-                    {{ results.telkom_lte.strMessage }}
-                </div>
-            </div></a>
-        </div>
-    {% elif error %}
-        <p style="color: red;">{{ error }}</p>
+            </div>
+        </div></a>
     {% endif %}
 </div>
 <div class="container-fluid intro">
@@ -440,12 +433,30 @@
     <br><br>
 </div>
 
+<div class="container-fluid bg-dark text-white py-5">
+    <div class="container">
+        <h2 class="text-center mb-4">The Following Options Are Available at Your Address:</h2>
+        <div class="row">
+            {% for item in products %}
+            <div class="col-md-4 mb-4">
+                <div class="card text-center p-3 shadow-lg border-0" style="background: #9bdde9; color: white; border-radius: 10px;">
+                    <h5 class="fw-bold">FrogFoot</h5>
+                    <h4 class="text-primary">{{ item.strName }}</h4>
+                    <p class="text-muted">Speed: {{ item.guidProductId }} Mbps</p>
+                    <p class="text-success">Price: R{{ item.price }}/pm</p>
+                    <a id="{{ item.guidProductId }}" href="{% url 'register_view' %}?product_id={{ item.guidProductId }}"><button class="btn btn-success w-100">Order Now</button></a>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
 
-<div class="container-fluid bg-dark stuff" >
+<!-- <div class="container-fluid bg-dark stuff" >
     <br><br>
     <div id="telkom_packages" class="container">
         <div class="product-container">
-            <h1>Our TELKOM LTE Packages</h1>
+            <h1>Fibre Packages</h1>
             <strong><p>Choose the perfect package for your needs and enjoy fast, reliable internet with no hassle!</p></strong>
             <div class="product-grid row">
                 <div class="product-card">
@@ -531,7 +542,7 @@
             </div>
         </div>
     </div>
-</div><hr class="color-white">
+</div><hr class="color-white">  -->
 
 <br><br><br>
 <button onclick="topFunction()" id="topButton" tite="Go to top"> <i class="bi bi-chevron-double-up h3"></i> Back to top</button>

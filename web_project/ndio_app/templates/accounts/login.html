@@ -55,6 +55,9 @@
         <div class="login-header">
             <img src="{% static 'images/ndio_logo.png' %}" width=200 height=100>
             <br><b><br><b><br><hr><b><br><b>
+            {% for message in messages %}
+                {{message}}
+            {% endfor %}
             <h2>Login</h2>
             <br>
         </div>
