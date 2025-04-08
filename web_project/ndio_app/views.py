@@ -121,6 +121,7 @@ def home(request):
 
         # Create request session for address
         request.session["address"] = address
+        print(address)
 
         # Check if network providers list is appended
         if network_providers_list is not None:
@@ -157,44 +158,35 @@ def referral_home(request, ref_code=None):
         except UserDetail.DoesNotExist:
             print(f"Invalid referral code: {ref_code}")
 
-    mtn_products = get_mtn_lte_products()
-    telkom_products = get_telkom_products()
+    request.session.flush()
+    context={}
+    network_provider_products_list = []
+    if request.method == "POST":
+        fibre_is_available = False
+        address = request.POST.get("address")
+        network_providers_list = check_fibre_availability(address=address)
 
-    if "address" in request.GET:  # Check if the user submitted the form
-        address = request.GET.get("address")  # Get the address from the form
-        lat, lng = get_coordinates(address)  # Get coordinates from the address
-        session_id = get_session()  # Get a session ID for API requests
-        bbox = request.GET.get("strBBox")
-        width = request.GET.get("strWidth")
-        height = request.GET.get("strHeight")
-        i_coordinate = request.GET.get("strICoOrdinate")
-        j_coordinate = request.GET.get("strJCoOrdinate")
+        # Create request session for address
+        request.session["address"] = address
 
-        # Store address in session
-        request.session['address'] = address
-            
-        if lat and lng and session_id:  # Ensure we have valid coordinates and session
-            results = {
-                "mtn_lte": check_mtn_lte_availability(lat, lng, address, bbox, height, width, i_coordinate, j_coordinate),
-                "telkom_lte": check_telkom_lte_availability(lat, lng, address),
-            }
-
-            context = {
-                "results": results,
-                "address": address,
-                "latitude": lat,
-                "longitude": lng,
-                "mtn_products": mtn_products,
-                "telkom_products": telkom_products
-            }
-            return render(request, "ndio_app/referral_home.html", context)
+        # Check if network providers list is appended
+        if network_providers_list is not None:
+            fibre_is_available = True
+            network_provider_products_list = get_network_provider_products(address=address)
         else:
-            return render(request, "ndio_app/referral_home.html", {"error": "Could not determine location or session expired."})
+            fibre_is_available = False
+            network_providers_list = []
+            
+        context = {
+            "products" : network_provider_products_list,
+            "fibre_is_available": fibre_is_available,
+            "address": address
+        }
+    return render(request, "ndio_app/home_referral.html", context=context)
 
-    return render(request, "ndio_app/referral_home.html")
-
-def create_client(first_name, last_name, email, client_password, id_number, address, city, postal_code, suburb, province):
-    """ This function creates a user on the api end
+def create_client(first_name, last_name, email, client_password, id_number, address, city, postal_code, suburb, province_id):
+    """ 
+    This function creates a user on the api end
     using the information retrieved from a form. 
     It accepts the following parameters:
         - SessionId 
@@ -206,7 +198,8 @@ def create_client(first_name, last_name, email, client_password, id_number, addr
         - strAddress
         - strSuburb
         - strCity
-        - intPostalCode """
+        - intPostalCode 
+        """
     
     # Get session ID before interacting with API 
     session_id = get_session()
@@ -220,6 +213,7 @@ def create_client(first_name, last_name, email, client_password, id_number, addr
               "strIdNumber": id_number,
               "strAddress": address,
               "strSuburb" : suburb,
+              "intProvinceId" : int(province_id),
               "strCity": city,
               "intPostalCode": postal_code
               }
@@ -231,15 +225,97 @@ def create_client(first_name, last_name, email, client_password, id_number, addr
 
     # Check if the user was created or not
     if response.status_code == 201:
-        print(response.json().get("guidClientId"))
         return response.json().get("guidClientId")
     else:
         print("User not created")
+
+import os
+import requests
+
+def create_fibre_service(
+    session_id, client_id, product_id, network_provider_id, owner, cellphone_number, address, 
+    address_type, suburb, city, postal_code, coordinates, building_number, floor_number, 
+    unit_number, block_name
+):
+    """
+    Creates a fibre service order using the Axxess Reseller API.
+
+    Parameters:
+        session_id (str): Active session ID from getSession().
+        client_id (str): Unique client identifier.
+        product_id (str): Selected product's unique identifier.
+        network_provider_id (str): Network provider's unique identifier.
+        owner (str): Name of the fibre line owner.
+        cellphone_number (str): Contact number of the owner.
+        address (str): Full installation address.
+        address_type (str): Type of address (House, Apartment, etc.).
+        suburb (str): Suburb name.
+        city (str): City name.
+        postal_code (str): Postal code of the address.
+        coordinates (tuple | str): Latitude and Longitude as (lat, long) or a formatted string.
+        building_number (str): Building number (if applicable).
+        floor_number (str): Floor number (if applicable).
+        unit_number (str): Unit number (if applicable).
+        block_name (str): Block name (if applicable).
+
+    Returns:
+        dict: Response containing service ID and balance or an error message.
+    """
+
+    url = "https://apitest.axxess.co.za/calls/rsapi/createFibreComboService.json"
+
+    # Use environment variables for security
+    username = "ResellerAdmin"
+    password = "jFbd5lg7Djfbn48idmlf4Kd"
+
+    # Ensure coordinates are in "lat,long" format
+    if isinstance(coordinates, (list, tuple)):
+        coordinates = f"{coordinates[0]},{coordinates[1]}"
+
+    params = {
+        "strSessionId": session_id,  # Do NOT reassign session_id
+        "guidClientId": client_id,
+        "guidProductId": product_id,
+        "guidNetworkProviderId": network_provider_id,
+        "strOwner": owner,
+        "strCell": cellphone_number,
+        "strAddress": address,
+        "strSuburb": suburb,
+        "strCity": city,
+        "strCode": postal_code,
+        "strLatLong": coordinates,
+        "strAddressType": address_type,
+        "strBuildingId": building_number,
+        "strFloorId": floor_number,
+        "strUnitNumber": unit_number,
+        "strBlockName": block_name
+    }
+
+    
+    response = requests.get(url, params=params, auth=(username, password))
+
+    if response.status_code == 201:
+        data = response.json()
+        print("Success")
+        return {
+            "service_id": data.get("guidServiceId"),
+            "balance": data.get("decBalance"),
+            "message": "Fibre service created successfully."
+        }
+    else:
+        print(response.json())
+        return {
+            "error": f"Failed to create service. Status Code: {response.status_code}",
+            "details": response.json()
+        }
+
 
 def register_view(request):
     # Getting the product ID
     fibre_product = request.GET.get("product_id")
     request.session["fibre_product"] = fibre_product
+
+
 
     if request.method == "POST":
         # Username validation
@@ -295,14 +371,13 @@ def hosting_view(request):
 def fibre_view(request):
     return render(request, 'ndio_app/fibre.html')
 
-@login_required
+
 def order_details(request):
     """Handles order details submission."""
     referrer_id = request.session.get('referrer')
     referrer = User.objects.get(id=referrer_id) if referrer_id else None
 
     if request.method == "POST":
-        print(f"Request Data: {request.POST}")
         form = forms.UserDetailForm(request.POST)
         form_order = forms.OrderForm(request.POST)
 
@@ -313,6 +388,7 @@ def order_details(request):
             client.referred_by = referrer  
             client_first_name = (client.first_name)
             client_last_name = (client.last_name)
+            client_cell_number = client.phone_number
             client_email = "client@ndio.co.za"
             # Add client phone
             client_password = request.session.get("password")
@@ -328,8 +404,27 @@ def order_details(request):
             postal_code = order.postal_code
             suburb = order.suburb
             province = order.province
+            client_address_type = order.address_type
+            client
+            
+            province_codes = {
+                "Eastern Cape": 1,
+                "Free State":2,
+                "Gauteng":3,
+                "Kwazulu-Natal":4,
+                "Mpumalanga":5,
+                "Northern Cape":6,
+                "Limpopo":7,
+                "North West Province":8,
+                "Western Cape":9,
+                "Other":0,
+            }
 
-            create_client(
+            for provinces in province_codes:
+                if province == provinces:
+                    province_id = province_codes[provinces]
+
+            client_id = create_client(
                 client_first_name,
                 client_last_name,
                 client_email,
@@ -339,8 +434,44 @@ def order_details(request):
                 client_city,
                 postal_code,
                 suburb, 
-                province
+                province_id
                 )
+            print(f"From the variable(CLIENT ID ON AXXESS!!):{client_id}")
+            fibre_product_id = request.session.get("fibre_product")
+
+            if fibre_product_id:
+                product = FibreProduct.objects.filter(product_id=fibre_product_id).first()
+                network_provider = product.network_provider
+                print(network_provider)
+
+            network = NetworkProvider.objects.filter(name=network_provider).first()
+            network_provider_id = network.guid_network_provider_id
+            print(f"Network providerId: {network_provider_id}")
+            print(f"Coordinates: {get_coordinates(client_address)}")
+
+            house_number = client_address.split(" ")[0]
+            floor_number =0
+            apartment_number = 0
+            print(f"product_ID: {fibre_product_id}")
+            block_name = client_address.split(" ")[1]
+            create_fibre_service(
+                session_id = get_session(),
+                client_id=client_id,
+                product_id=fibre_product_id,
+                network_provider_id=network_provider_id,
+                owner=client_first_name,
+                cellphone_number=client.phone_number,
+                address=client_address,
+                address_type=client_address_type,
+                postal_code=postal_code,
+                building_number=house_number,
+                suburb=suburb,
+                city=client_city,
+                coordinates = get_coordinates(client_address),
+                unit_number=apartment_number,
+                floor_number=floor_number,
+                block_name=block_name),
+            
             order.save()
 
             return redirect("payment_view")
@@ -410,56 +541,69 @@ def process_payment(request):
                 'Content-Type': 'application/json'
             }
             
-            try:
-                data = json.dumps({
-                    'amount': float(amount),  # Convert to cents for the Yoco API
-                    'currency': currency,
-                    'successUrl': request.build_absolute_uri('/user_account/'),
-                    'cancelUrl': request.build_absolute_uri('/unsuccessful_payment/')
-                })
-            except Exception as e:
-                return JsonResponse({'status': 'error', 'message': f'Invalid amount: {e}'})
+            data = json.dumps({
+                'amount': float(amount),
+                'currency': currency,
+                'successUrl': request.build_absolute_uri('/user_account/'),  # Redirect after success
+                'cancelUrl': request.build_absolute_uri('/unsuccessful_payment/')
+            })
 
             response = requests.post(url, headers=headers, data=data)
 
             if response.status_code < 400:
-                # Redirect user to Yoco's payment page
+                # Get redirect URL from Yoco
                 redirect_url = response.json().get('redirectUrl')
+
+                # Save the payment record in the database
+                Payment.objects.create(
+                    user = request.user,  # Store the user who made the payment
+                    amount = amount,
+                    status = "Pending",  # Set status to pending initially
+                    payment_id = response.json().get('id'),  # Store transaction ID
+                    name = name
+                )
+
                 if redirect_url:
                     return redirect(redirect_url)
+
                 return JsonResponse({'status': 'success', 'message': 'Payment initiated but no redirect URL received'})
             else:
-                return redirect('unsuccessful')  # If Yoco request fails
+                return redirect('unsuccessful')
 
         else:
             return JsonResponse({'status': 'error', 'message': 'Invalid form data', 'errors': form.errors})
 
     return JsonResponse({'status': 'error', 'message': 'Invalid request method'})
 
-@csrf_exempt  # Avoid this if possible; use CSRF tokens.
 def payment_view(request):
     fibre_product_id = request.session.get("fibre_product")
 
-    # Check if the product id was given
+    # Check if the product ID exists in the session
     if not fibre_product_id:
         return JsonResponse({"status": "error", "message": "No product selected"})
-    else:
-        product = FibreProduct.objects.filter(product_id=fibre_product_id).first()
-        product_price = product.price
-        total_price = product_price + 300
-        public_key = settings.YOCO_PUBLIC_KEY
-        initial_data = {'amount': total_price}
-        form = PaymentForm(initial=initial_data)
-        if form.is_valid():
-            form = form.save()
 
-        context = {
-            'yoco_public_key': public_key,
-            'currency': 'ZAR',
-            'product_name': product,
-            'product_price': product_price,
-            'form': form,
-            'amount': total_price
-        }
+    # Fetch the product and handle case where it does not exist
+    product = FibreProduct.objects.filter(product_id=fibre_product_id).first()
+    if not product:
+        return JsonResponse({"status": "error", "message": "Product not found"})
+
+    # Calculate total price
+    product_price = product.price
+    total_price = product_price + 300
+
+    # Yoco Public Key
+    public_key = settings.YOCO_PUBLIC_KEY
+
+    # Create an unbound form with initial data (DO NOT call is_valid() or save())
+    form = PaymentForm(initial={'amount': total_price})
+
+    context = {
+        'yoco_public_key': public_key,
+        'currency': 'ZAR',
+        'product_name': product.product_name,  # Use product.name instead of the whole object
+        'product_price': product_price,
+        'form': form,
+        'amount': total_price
+    }
 
     return render(request, 'ndio_app/payments.html', context)
