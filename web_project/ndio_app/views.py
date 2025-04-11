@@ -365,11 +365,25 @@ def lte_view(request):
     #items = get_products()
     return render(request, 'ndio_app/lte.html', {})
 
-def hosting_view(request):
-    return render(request, 'ndio_app/hosting.html')
+def about_us(request):
+    return render(request, 'ndio_app/about_us.html')
 
-def fibre_view(request):
-    return render(request, 'ndio_app/fibre.html')
+def switch(request):
+    return render(request, 'ndio_app/switch.html')
+
+def packages(request):
+    """
+    This function returns all the packages from the 
+    database for specific netwwork providers and renders
+    them to the template.
+    """
+
+    # Get the network provider
+    providers = NetworkProvider.objects.all()
+    context = {
+        "providers": providers
+    }
+    return render(request, 'ndio_app/packages.html', context=context)
 
 
 def order_details(request):
@@ -496,7 +510,7 @@ def order_details(request):
 
     return render(request, 'ndio_app/order_details.html', {'form': form, 'form_order': form_order})
     
-@login_required
+#@login_required
 def user_account(request):
     # Get user_id
     user_id = request.user.id

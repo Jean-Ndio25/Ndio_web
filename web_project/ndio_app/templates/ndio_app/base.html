@@ -127,7 +127,7 @@
         position: relative;
         height: 80vh;
         min-height: 600px;
-        background: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), url("{% static 'images/background1.png'}");
+        background: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), url("{% static 'images/background1.png' %}");
         background-size: cover;
         background-position: center;
         background-attachment: fixed;
@@ -486,7 +486,7 @@
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav ms-auto">
                     <li class="nav-item">
-                        <a class="nav-link d-flex align-items-center" href="{% url 'lte_view' %}">                            
+                        <a class="nav-link d-flex align-items-center" href="{% url 'switch' %}">                            
                             <i class="bi bi-lightning-charge-fill me-2"></i>
                             <span>SWITCH TO NDIO</span>
                         </a>
@@ -497,11 +497,37 @@
                             <span>LTE</span>
                         </a>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link d-flex align-items-center" href="{% url 'hosting_view' %}">
+                    <li class="nav-item dropdown">
+                        <a class="nav-link d-flex align-items-center dropdown-toggle" href="#" id="servicesDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                             <i class="bi bi-globe me-2"></i>
-                            <span>PACKAGES</span>
+                            <span>SERVICES</span>
                         </a>
+                        <ul class="dropdown-menu" aria-labelledby="servicesDropdown">
+                            <li><a class="dropdown-item d-flex align-items-center" href="{% url 'about_us' %}">
+                                <i class="bi bi-hdd-stack me-2"></i>
+                                Home Fibre
+                            </a></li>
+                            <li><a class="dropdown-item d-flex align-items-center" href="{% url 'lte_view' %}">
+                                <i class="bi bi-router me-2"></i>
+                                Business Fibre
+                            </a></li>
+                            <li><a class="dropdown-item d-flex align-items-center" href="#">
+                                <i class="bi bi-shield-lock me-2"></i>
+                                VoIP
+                            </a></li>
+                            <li><a class="dropdown-item d-flex align-items-center" href="#">
+                                <i class="bi bi-cloud me-2"></i>
+                                Wireless Internet
+                            </a></li>
+                            <li><a class="dropdown-item d-flex align-items-center" href="#">
+                                <i class="bi bi-cloud me-2"></i>
+                                Network Cabling
+                            </a></li>
+                            <li><a class="dropdown-item d-flex align-items-center" href="#">
+                                <i class="bi bi-cloud me-2"></i>
+                                Managed services
+                            </a></li>
+                        </ul>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link d-flex align-items-center" href="{% url 'login_view' %}">
@@ -616,14 +642,14 @@
                 <a href="#search_section"><p class="service-text promo" data-aos="fade-up" data-aos-delay="100">Check coverage</p></a>
             </div>
             <div class="col-md-2 justify-content-center">
-                
+                <img src="{% static 'images/char2_2.png' %}" class="img-fluid" style="max-height: 300px;">
             </div>
-            
-            <br><br><br><br><br>
+
             <div class="row">
                 <div class="col-lg-8" data-aos="fade-up" data-aos-delay="200">
                     <div class="row">
                         <div class="col-md-12 ">
+                        <br><br><br><br><br><br>
                             <h2 class="service-heading text-center">OUR PACKAGES</h2>
                             <p class="service-text">
                                 Upgrade to Lightning-Fast Fibre—Explore Our Best Deals Now!
@@ -684,9 +710,8 @@
                     <h5 class="footer-title">Quick Links</h5>
                     <ul class="footer-links">
                         <li><a href="/about">About Us</a></li>
-                        <li><a href="/services">Our Services</a></li>
-                        <li><a href="/packages">FAQs</a></li>
-                        <li><a href="/contact">Contact</a></li>
+                        <li><a href="/packages">Packages</a></li>
+                        <li><a href="/faqs">FAQs</a></li>
                     </ul>
                 </div>
                 

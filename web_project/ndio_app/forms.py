@@ -3,8 +3,6 @@ import uuid
 from django.contrib.auth.models import User # User model
 from django.contrib.auth.forms import UserCreationForm # Forms for user
 from ndio_app.models import Order, UserDetail 
-from phonenumber_field.formfields import PhoneNumberField
-from phonenumber_field.widgets import PhoneNumberPrefixWidget
 
 # ============== Forms for the users ===============
 class CustomUserCreationForm(UserCreationForm):

@@ -87,7 +87,8 @@ DATABASES = {
         'NAME': 'NDIO',
         'USER': 'postgres',
         'PASSWORD': 'AdminPassword',
-        'HOST': 'localhost'
+        'HOST': 'localhost',
+        'PORT': '5432'
     }
 }
 

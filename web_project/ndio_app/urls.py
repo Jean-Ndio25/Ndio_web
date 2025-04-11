@@ -7,8 +7,9 @@ urlpatterns = [
     # Referral home page
     path('home_referral/<str:ref_code>/', views.referral_home, name='referral_home'),
     path('lte/', views.lte_view, name='lte_view'),
-    path('fibre/', views.fibre_view, name='fibre_view'),
-    path('hosting/', views.hosting_view, name='hosting_view'),
+    path('switch/', views.switch, name='switch'),
+    path('about/', views.about_us, name='about_us'),
+    path('packages/', views.packages, name='packages'),
     path('register/', views.register_view, name='register_view'),
     path('login_user/', views.login_view, name='login_view'),
     path('user_account/', views.user_account, name='user_account'),
