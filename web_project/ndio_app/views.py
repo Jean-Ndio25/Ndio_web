@@ -5,7 +5,7 @@ from django.http import JsonResponse
 from django.shortcuts import render, redirect
 from django.contrib.auth import login, logout
 from django.contrib.auth.forms import AuthenticationForm
-from ndio_app.models import Payment, UserDetail, User, FibreProduct, NetworkProvider
+from ndio_app.models import Payment, UserDetail, User, FibreProduct, NetworkProvider, FAQ
 from .forms import CustomUserCreationForm, PaymentForm, UserDetailForm, OrderForm
 from . import forms
 from django.contrib import messages
@@ -371,6 +371,13 @@ def about_us(request):
 def switch(request):
     return render(request, 'ndio_app/switch.html')
 
+def faqs(request):
+    faq = FAQ.objects.all()
+    context = {
+        "faqs" : faq
+    } 
+    return render(request, 'ndio_app/faqs.html', context=context)
+
 def packages(request):
     """
     This function returns all the packages from the 
@@ -385,6 +392,23 @@ def packages(request):
     }
     return render(request, 'ndio_app/packages.html', context=context)
 
+def home_fibre(request):
+    return render(request, 'ndio_app/fibre.html')
+
+def business_fibre(request):
+    return render(request, 'ndio_app/business_fibre.html')
+
+def voip(request):
+    return render(request, 'ndio_app/voip.html')
+
+def wireless(request):
+    return render(request, 'ndio_app/wireless.html')
+
+def network_cabling(request):
+    return render(request, 'ndio_app/network_cabling.html')
+
+def managed(request):
+    return render(request, 'ndio_app/managed.html')
 
 def order_details(request):
     """Handles order details submission."""

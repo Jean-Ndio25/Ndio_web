@@ -103,6 +103,12 @@ class UserSubscription(models.Model):
     def __str__(self):
         return f"{self.user.username} - {self.status}"
 
+class FAQ(models.Model):
+    question = models.CharField(max_length=255)
+    answer = models.TextField()
+
+    def __str__(self):
+        return self.question
 
 class Communication(models.Model):
     MESSAGE_TYPES = [

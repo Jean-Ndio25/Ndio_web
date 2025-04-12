@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0">
-    <title>NDIO | Switch to Our Service</title>
+    <title>NDIO | Home-Fibre</title>
     
     <!-- Bootstrap 5 CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -59,52 +59,29 @@
         padding: 0 2rem;
     }
 
-    /* Steps Section */
-    .steps-section {
-        padding: 5rem 0;
-        background-color: var(--light-gray);
+    .scroll-container {
+        scroll-snap-type: x mandatory;
+        -webkit-overflow-scrolling: touch;
     }
 
-    .step-container {
-        max-width: 800px;
-        margin: 0 auto;
+    .glass-card {
+        width: 280px;
+        background: rgba(255, 255, 255, 0.05);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        backdrop-filter: blur(10px);
+        border-radius: 20px;
+        scroll-snap-align: start;
+        transition: transform 0.3s ease;
     }
 
-    .step-card {
-        background: var(--white);
-        border-radius: 10px;
-        box-shadow: var(--shadow-md);
-        padding: 2rem;
-        margin-bottom: 2rem;
-        position: relative;
-        transition: var(--transition);
+    .glass-card:hover {
+        transform: scale(1.05);
     }
 
-    .step-number {
-        position: absolute;
-        top: -20px;
-        left: 20px;
-        width: 40px;
-        height: 40px;
-        background-color: var(--primary-orange);
-        color: var(--white);
-        border-radius: 50%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-weight: 700;
-        font-size: 1.25rem;
-    }
-
-    .step-title {
-        font-family: 'Montserrat', sans-serif;
-        color: var(--dark-green);
-        margin-bottom: 1rem;
-        font-size: 1.5rem;
-    }
-
-    .step-content {
-        color: var(--black);
+    .text-gradient {
+        background: linear-gradient(to right, #00f2fe, #4facfe);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
     }
 
     /* Footer */
@@ -198,51 +175,63 @@
 </head>
 
 <body>
-    <!-- Hero Section -->
-    <section class="hero">
-        <div class="container hero-content text-center">
-            <h1 class="display-4 fw-bold mb-4">Switch to NDIO</h1>
-            <p class="lead mb-5">Simple steps to get our fast, reliable service</p>
-        </div>
-    </section>
+<!-- Hero Section -->
+<section class="hero">
+    <div class="container hero-content text-center">
+        <h1 class="display-4 fw-bold mb-4">Experience NDIO Home-Fibre</h1>
+        <p class="lead mb-5">Reliable. Lightning-Fast. Designed for Every African Home.</p>
+    </div>
+</section>
 
-    <!-- Steps Section -->
-    <section class="steps-section">
-        <div class="container step-container">
-            <div class="step-card">
-                <div class="step-number">1</div>
-                <h3 class="step-title">Sign Up for NDIO Fibre</h3>
-                <div class="step-content">
-                    <p>Begin by signing up for our fibre service. Our team will guide you through the process and check availability in your area.</p>
-                </div>
-            </div>
-            
-            <div class="step-card">
-                <div class="step-number">2</div>
-                <h3 class="step-title">Cancel Your Existing Service</h3>
-                <div class="step-content">
-                    <p>Contact your current ISP to cancel your existing fibre service. Make sure to check if there are any cancellation fees or notice periods required.</p>
-                </div>
-            </div>
-            
-            <div class="step-card">
-                <div class="step-number">3</div>
-                <h3 class="step-title">Wait for Line Release</h3>
-                <div class="step-content">
-                    <p>Once your existing service is cancelled, your current ISP will release your fibre line. This process typically takes a few business days.</p>
-                    <p class="mt-2"><strong>Tip:</strong> Notify us when you receive confirmation that your line has been released to speed up the activation process.</p>
-                </div>
-            </div>
-            
-            <div class="step-card">
-                <div class="step-number">4</div>
-                <h3 class="step-title">Enjoy Your New NDIO Connection</h3>
-                <div class="step-content">
-                    <p>Once the line is released, we'll activate your NDIO service. You'll then be able to enjoy our lightning-fast, reliable fibre internet.</p>
-                </div>
-            </div>
+<!-- Home Fibre Feature Section -->
+<section class="py-5 bg-light text-dark">
+    <div class="container">
+      <div class="text-center mb-5">
+        <h2 class="fw-bold display-5">Why NDIO Home Fibre?</h2>
+        <p class="text-muted">Experience digital living without limits — designed for your home, your family, and your future.</p>
+      </div>
+  
+      <!-- Feature 1 -->
+      <div class="row align-items-center mb-5">
+        <div class="col-md-6">
+            <img src="{% static 'images/example.jpeg' %}" alt="NDIO Logo" class="footer-logo" width="100%" height="100%">
         </div>
-    </section>
+        <div class="col-md-6">
+          <h4 class="fw-bold">Unmatched Speed & Reliability</h4>
+          <p class="text-muted">From Zoom calls to Netflix marathons, NDIO's fibre delivers blazing-fast, stable internet that keeps the whole household connected without lag.</p>
+        </div>
+      </div>
+  
+      <!-- Feature 2 -->
+      <div class="row align-items-center mb-5 flex-md-row-reverse">
+        <div class="col-md-6">
+          <img src="https://via.placeholder.com/500x300?text=Seamless+Streaming" alt="No Buffering" class="img-fluid rounded-4 shadow">
+        </div>
+        <div class="col-md-6">
+          <h4 class="fw-bold">No Buffering, No Waiting</h4>
+          <p class="text-muted">Stream, browse, game, and video call — all at the same time. NDIO's fibre network ensures seamless performance for every corner of your home.</p>
+        </div>
+      </div>
+   
+      <!-- Feature 4 -->
+      <div class="row align-items-center mb-5 flex-md-row-reverse">
+        <div class="col-md-6">
+          <img src="https://via.placeholder.com/500x300?text=Local+Support" alt="Local Support" class="img-fluid rounded-4 shadow">
+        </div>
+        <div class="col-md-6">
+          <h4 class="fw-bold">Friendly, Local Support</h4>
+          <p class="text-muted">Need help? We’re just around the corner. NDIO’s support team offers fast, friendly service from people who truly understand your community’s needs.</p>
+        </div>
+      </div>
+  
+      <!-- Final Call to Action -->
+      <div class="text-center mt-5">
+        <h5 class="fw-semibold mb-3">Why settle for slow? Step into the fast lane of digital life.</h5>
+        <a href="#" class="btn btn-primary btn-lg rounded-pill px-4">Get NDIO Home Fibre</a>
+      </div>
+    </div>
+  </section>
+  
 
     <!-- Footer -->
     <footer class="footer">
