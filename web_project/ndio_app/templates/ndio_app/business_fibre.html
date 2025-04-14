@@ -547,7 +547,7 @@
                 <h1 class="display-4 fw-bold mb-4">Business Fibre</h1>
                 <p class="lead mb-5">Experience the future of connectivity with NDIO's ultra-fast fibre networks</p>
                 
-                <form class="search-bar" role="search" id="search-form" method="POST" action="{% url 'home' %}">
+                <form class="search-bar" role="search" id="search-form" method="POST" action="{% url 'business_fibre' %}">
                     {% csrf_token %}
                     <div class="input-group">
                         <input class="form-control search-input" type="search" id="address" name="address" placeholder="Enter your address to check coverage" required>
@@ -600,16 +600,25 @@
                                         <div>
                                             <h5 class="mb-0">Business Fibre Internet</h5>
                                             <p class="mb-0 text-danger">Not currently available</p>
-
-                                            <p class="mb-0 text-success">Available in your area</p>
-                                        </div>
-                                        <div>
-                                            <h5 class="mb-0">We do have Wireless Internet</h5>
-                                            <a href="#"><p class="mb-0 text-success">Available in your area</p></a>
-                                            
                                         </div>
                                     </div>
                                     <button class="btn btn-outline-secondary px-4" disabled>Unavailable</button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card border-0 shadow-sm mb-4" data-aos="fade-up">
+                            <div class="card-body p-4">
+                                <div class="d-flex align-items-center justify-content-between">
+                                    <div class="d-flex align-items-center">
+                                        <div class="bg-danger bg-opacity-10 p-3 rounded-circle me-3">
+                                            <i class="bi bi-lightning-charge-fill text-danger fs-3"></i>
+                                        </div>
+                                        <div>
+                                            <h5 class="mb-0">Wireless Internet</h5>
+                                            <p class="mb-0 text-success">Available in your area</p>
+                                        </div>
+                                    </div>
+                                    <a href="{% url 'wireless' %}" class="btn btn-success px-4" id="fibre_link">Get Wireless internet</a>
                                 </div>
                             </div>
                         </div>

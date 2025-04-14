@@ -396,7 +396,32 @@ def home_fibre(request):
     return render(request, 'ndio_app/fibre.html')
 
 def business_fibre(request):
-    return render(request, 'ndio_app/business_fibre.html')
+    context={}
+    network_provider_products_list = []
+    if request.method == "POST":
+        fibre_is_available = False
+        address = request.POST.get("address")
+        network_providers_list = check_fibre_availability(address=address)
+
+        # Create request session for address
+        request.session["address"] = address
+        print(address)
+
+        # Check if network providers list is appended
+        if network_providers_list is not None:
+            fibre_is_available = True
+            network_provider_products_list = get_network_provider_products(address=address)
+        else:
+            fibre_is_available = False
+            network_providers_list = []
+            
+        context = {
+            "products" : network_provider_products_list,
+            "fibre_is_available": fibre_is_available,
+            "address": address
+        }
+    return render(request, "ndio_app/business_fibre.html", context=context)
+
 
 def voip(request):
     return render(request, 'ndio_app/voip.html')
