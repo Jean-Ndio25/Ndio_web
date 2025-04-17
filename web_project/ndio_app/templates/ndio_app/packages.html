@@ -44,7 +44,7 @@
         position: relative;
         height: 40vh;
         min-height: 300px;
-        background: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), url("{% static 'images/background1.png'}");
+        background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url("{% static 'images/background3.png' %}");
         background-size: cover;
         background-position: center;
         display: flex;
@@ -201,6 +201,9 @@
     <!-- Hero Section -->
     <section class="hero">
         <div class="container hero-content text-center">
+            <a href="{% url 'home' %}" class="btn btn-outline-light mb-3">
+                <i class="bi bi-arrow-left-circle"></i> Back to Homepage
+            </a>
             <h1 class="display-4 fw-bold mb-4">Switch to NDIO</h1>
             <p class="lead mb-5">Simple steps to get our fast, reliable service</p>
         </div>
@@ -240,7 +243,8 @@
                 <div class="col-lg-2 mb-5 mb-lg-0">
                     <h5 class="footer-title">Quick Links</h5>
                     <ul class="footer-links">
-                        <li><a href="/about">About Us</a></li>
+                        <li><a href="/home">Home</a></li>
+                        <li><a href="/about">About us</a></li>
                         <li><a href="/faqs">FAQs</a></li>
                     </ul>
                 </div>

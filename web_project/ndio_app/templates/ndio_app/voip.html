@@ -324,6 +324,21 @@
         opacity: 0.9;
     }
 
+    .btn-block{
+        border-radius: 50px !important;
+        padding: 1rem 2rem;
+        background-color: var(--primary-orange);
+        border: none;
+        font-weight: 500;
+        transition: var(--transition);
+        width: 100%;
+    }
+
+    .btn-block:hover{
+        background-color: var(--dark-orange);
+        transform: translateY(-2px);
+    }
+
     /* Footer */
     .footer {
         background-color: var(--dark-black);
@@ -475,67 +490,12 @@
 </head>
 
 <body>
-    <!-- Navigation -->
-    <nav class="navbar navbar-expand-lg navbar-dark">
-        <div class="container">
-            <a class="navbar-brand" href="{% url 'home' %}">
-                <img src="{% static 'images/ndio_logo.png' %}" alt="NDIO Logo">
-            </a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav ms-auto">
-                    <li class="nav-item">
-                        <a class="nav-link d-flex align-items-center" href="{% url 'switch' %}">                            
-                            <i class="bi bi-lightning-charge-fill me-2"></i>
-                            <span>SWITCH TO NDIO</span>
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link d-flex align-items-center" href="{% url 'lte_view' %}">
-                            <i class="bi bi-router-fill me-2"></i>
-                            <span>LTE</span>
-                        </a>
-                    </li>
-                    <li class="nav-item dropdown">
-                        <a class="nav-link d-flex align-items-center dropdown-toggle" href="#" id="servicesDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                            <i class="bi bi-globe me-2"></i>
-                            <span>SERVICES</span>
-                        </a>
-                        <ul class="dropdown-menu" aria-labelledby="servicesDropdown">
-                            <li><a class="dropdown-item d-flex align-items-center" href="{% url 'home_fibre' %}">
-                                <i class="bi bi-hdd-stack me-2"></i>
-                                Home Fibre
-                            </a></li>
-                            <li><a class="dropdown-item d-flex align-items-center" href="{% url 'business_fibre' %}">
-                                <i class="bi bi-router me-2"></i>
-                                Business Fibre
-                            </a></li>
-                            <li><a class="dropdown-item d-flex align-items-center active" href="#">
-                                <i class="bi bi-shield-lock me-2"></i>
-                                VoIP
-                            </a></li>
-                            <li><a class="dropdown-item d-flex align-items-center" href="#">
-                                <i class="bi bi-cloud me-2"></i>
-                                Wireless Internet
-                            </a></li>
-                        </ul>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link d-flex align-items-center" href="{% url 'login_view' %}">
-                            <i class="bi bi-person-circle me-2"></i>
-                            <span>LOGIN</span>
-                        </a>
-                    </li>
-                </ul>
-            </div>
-        </div>
-    </nav>
-
     <!-- VoIP Hero Section -->
     <section class="voip-hero">
         <div class="container voip-hero-content text-center">
+            <a href="{% url 'home' %}" class="btn btn-outline-light mb-3">
+                <i class="bi bi-arrow-left-circle"></i> Back to Homepage
+            </a><br><br>
             <div data-aos="fade-up" data-aos-duration="1000">
                 <h1>Revolutionize Your Business Communications</h1>
                 <p class="lead">NDIO's VoIP solutions deliver crystal-clear voice quality, advanced features, and significant cost savings for businesses of all sizes.</p>
@@ -645,7 +605,7 @@
                             <input type="email" class="form-control" id="userEmail" placeholder="Enter your email address" required>
                         </div>
                         <br>
-                        <button type="submit" class="btn btn-primary btn-block">Request Contact</button>
+                        <button type="submit" class="btn btn-block">Request Contact</button>
                     </form>
                     <div id="formSuccess" class="alert alert-success mt-3" style="display:none;">
                         Thank you! We'll be in touch soon.
@@ -685,8 +645,8 @@
                 <div class="col-lg-2 mb-5 mb-lg-0">
                     <h5 class="footer-title">Quick Links</h5>
                     <ul class="footer-links">
-                        <li><a href="/about">About Us</a></li>
-                        <li><a href="#pricing">Pricing</a></li>
+                        <li><a href="/home">Home</a></li>
+                        <li><a href="/about">About us</a></li>
                         <li><a href="/faqs">FAQs</a></li>
                     </ul>
                 </div>

@@ -124,7 +124,7 @@
         position: relative;
         height: 70vh;
         min-height: 600px;
-        background: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), url("{% static 'images/wireless-bg.jpg' %}");
+        background: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), url("{% static 'images/background1.png' %}");
         background-size: cover;
         background-position: center;
         display: flex;
@@ -295,146 +295,6 @@
         color: var(--primary-orange);
     }
 
-    /* Packages Section */
-    .packages-section {
-        padding: 5rem 0;
-        background-color: var(--light-gray);
-    }
-
-    .package-card {
-        background: var(--white);
-        border-radius: 12px;
-        padding: 2.5rem;
-        margin-bottom: 2rem;
-        box-shadow: var(--shadow-sm);
-        transition: var(--transition);
-        height: 100%;
-        text-align: center;
-        position: relative;
-        overflow: hidden;
-    }
-
-    .package-card.popular {
-        border: 2px solid var(--primary-orange);
-        box-shadow: var(--shadow-lg);
-    }
-
-    .popular-badge {
-        position: absolute;
-        top: 15px;
-        right: -30px;
-        background-color: var(--primary-orange);
-        color: var(--white);
-        padding: 0.25rem 2rem;
-        transform: rotate(45deg);
-        font-size: 0.8rem;
-        font-weight: 600;
-        width: 120px;
-        text-align: center;
-    }
-
-    .package-name {
-        font-weight: 700;
-        margin-bottom: 1rem;
-        color: var(--dark-black);
-    }
-
-    .package-speed {
-        font-size: 2rem;
-        font-weight: 700;
-        color: var(--primary-green);
-        margin-bottom: 1.5rem;
-    }
-
-    .package-price {
-        font-size: 2.5rem;
-        font-weight: 700;
-        margin: 1.5rem 0;
-    }
-
-    .package-price small {
-        font-size: 1rem;
-        opacity: 0.8;
-    }
-
-    .package-features {
-        list-style: none;
-        padding: 0;
-        margin: 2rem 0;
-    }
-
-    .package-features li {
-        margin-bottom: 0.75rem;
-        position: relative;
-        padding-left: 1.5rem;
-    }
-
-    .package-features li:before {
-        content: '\f00c';
-        font-family: 'Font Awesome 5 Free';
-        font-weight: 900;
-        position: absolute;
-        left: 0;
-        color: var(--primary-green);
-    }
-
-    /* Testimonials Section */
-    .testimonials-section {
-        padding: 5rem 0;
-        background-color: var(--white);
-    }
-
-    .testimonial-card {
-        background: var(--white);
-        border-radius: 12px;
-        padding: 2rem;
-        margin-bottom: 2rem;
-        box-shadow: var(--shadow-sm);
-        position: relative;
-        border-top: 4px solid var(--primary-orange);
-    }
-
-    .testimonial-card:before {
-        content: '"';
-        position: absolute;
-        top: 20px;
-        left: 20px;
-        font-size: 5rem;
-        font-family: Georgia, serif;
-        color: rgba(0,0,0,0.05);
-        line-height: 1;
-    }
-
-    .testimonial-text {
-        position: relative;
-        z-index: 1;
-        font-style: italic;
-        margin-bottom: 1.5rem;
-    }
-
-    .testimonial-author {
-        display: flex;
-        align-items: center;
-    }
-
-    .author-avatar {
-        width: 50px;
-        height: 50px;
-        border-radius: 50%;
-        margin-right: 1rem;
-        object-fit: cover;
-    }
-
-    .author-info h5 {
-        margin-bottom: 0.25rem;
-    }
-
-    .author-info p {
-        opacity: 0.7;
-        font-size: 0.9rem;
-        margin-bottom: 0;
-    }
-
     /* CTA Section */
     .cta-section {
         padding: 4rem 0;
@@ -600,115 +460,20 @@
         .section-title {
             font-size: 1.75rem;
         }
-        
-        .package-card {
-            padding: 1.5rem;
-        }
     }
     </style>
 </head>
 
 <body>
-    <!-- Navigation -->
-    <nav class="navbar navbar-expand-lg navbar-dark">
-        <div class="container">
-            <a class="navbar-brand" href="{% url 'home' %}">
-                <img src="{% static 'images/ndio_logo.png' %}" alt="NDIO Logo">
-            </a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav ms-auto">
-                    <li class="nav-item">
-                        <a class="nav-link d-flex align-items-center" href="{% url 'switch' %}">                            
-                            <i class="bi bi-lightning-charge-fill me-2"></i>
-                            <span>SWITCH TO NDIO</span>
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link d-flex align-items-center" href="{% url 'lte_view' %}">
-                            <i class="bi bi-router-fill me-2"></i>
-                            <span>LTE</span>
-                        </a>
-                    </li>
-                    <li class="nav-item dropdown">
-                        <a class="nav-link d-flex align-items-center dropdown-toggle" href="#" id="servicesDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                            <i class="bi bi-globe me-2"></i>
-                            <span>SERVICES</span>
-                        </a>
-                        <ul class="dropdown-menu" aria-labelledby="servicesDropdown">
-                            <li><a class="dropdown-item d-flex align-items-center" href="{% url 'home_fibre' %}">
-                                <i class="bi bi-hdd-stack me-2"></i>
-                                Home Fibre
-                            </a></li>
-                            <li><a class="dropdown-item d-flex align-items-center" href="{% url 'business_fibre' %}">
-                                <i class="bi bi-router me-2"></i>
-                                Business Fibre
-                            </a></li>
-                            <li><a class="dropdown-item d-flex align-items-center" href="#">
-                                <i class="bi bi-shield-lock me-2"></i>
-                                VoIP
-                            </a></li>
-                            <li><a class="dropdown-item d-flex align-items-center active" href="#">
-                                <i class="bi bi-wifi me-2"></i>
-                                Wireless Internet
-                            </a></li>
-                        </ul>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link d-flex align-items-center" href="{% url 'login_view' %}">
-                            <i class="bi bi-person-circle me-2"></i>
-                            <span>LOGIN</span>
-                        </a>
-                    </li>
-                </ul>
-            </div>
-        </div>
-    </nav>
-
     <!-- Wireless Hero Section -->
     <section class="wireless-hero">
         <div class="container wireless-hero-content text-center">
+            <a href="{% url 'home' %}" class="btn btn-outline-light mb-3">
+                <i class="bi bi-arrow-left-circle"></i> Back to Homepage
+            </a><br><br>
             <div data-aos="fade-up" data-aos-duration="1000">
                 <h1>Fast, Reliable Wireless Internet</h1>
                 <p class="lead">Experience high-speed connectivity without the cables. NDIO's wireless solutions bring lightning-fast internet to homes and businesses across South Africa.</p>
-                <a href="#coverage" class="btn cta-button">Check Coverage</a>
-            </div>
-        </div>
-    </section>
-
-    <!-- Coverage Check Section -->
-    <section class="coverage-section" id="coverage">
-        <div class="container">
-            <div class="coverage-card" data-aos="fade-up">
-                <h3>Check Wireless Coverage in Your Area</h3>
-                <form class="row g-3 justify-content-center" method="POST" action="">
-                    {% csrf_token %}
-                    <div class="col-md-8">
-                        <input type="text" class="form-control form-control-lg" placeholder="Enter your address" name="address" required>
-                    </div>
-                    <div class="col-md-4">
-                        <button type="submit" class="btn cta-button w-100">Check Now</button>
-                    </div>
-                </form>
-                
-                {% if coverage_result %}
-                <div class="alert alert-{% if coverage_result.available %}success{% else %}warning{% endif %} mt-4">
-                    <h5 class="alert-heading">Coverage Results for {{ coverage_result.address }}</h5>
-                    <p>
-                        {% if coverage_result.available %}
-                        <i class="bi bi-check-circle-fill text-success"></i> Wireless internet is available in your area!
-                        {% else %}
-                        <i class="bi bi-exclamation-triangle-fill text-warning"></i> Wireless internet is not currently available at this address.
-                        {% endif %}
-                    </p>
-                    {% if coverage_result.alternatives %}
-                    <hr>
-                    <p class="mb-0">We recommend checking our <a href="{% url 'lte_view' %}" class="alert-link">LTE packages</a> as an alternative solution.</p>
-                    {% endif %}
-                </div>
-                {% endif %}
             </div>
         </div>
     </section>
@@ -750,39 +515,8 @@
                         <h4 class="benefit-title">Rural Friendly</h4>
                         <p>Perfect solution for areas where fibre infrastructure isn't available.</p>
                     </div>
-                </div>
-                
-                <div class="col-md-4" data-aos="fade-up" data-aos-delay="100">
-                    <div class="benefit-card">
-                        <div class="benefit-icon">
-                            <i class="bi bi-arrow-repeat"></i>
-                        </div>
-                        <h4 class="benefit-title">Flexible Contracts</h4>
-                        <p>Month-to-month options available with no long-term lock-in periods.</p>
-                    </div>
-                </div>
-                
-                <div class="col-md-4" data-aos="fade-up" data-aos-delay="200">
-                    <div class="benefit-card">
-                        <div class="benefit-icon">
-                            <i class="bi bi-shield-check"></i>
-                        </div>
-                        <h4 class="benefit-title">Secure Connection</h4>
-                        <p>Military-grade encryption keeps your data safe and protected.</p>
-                    </div>
-                </div>
-                
-                <div class="col-md-4" data-aos="fade-up" data-aos-delay="300">
-                    <div class="benefit-card">
-                        <div class="benefit-icon">
-                            <i class="bi bi-headset"></i>
-                        </div>
-                        <h4 class="benefit-title">Local Support</h4>
-                        <p>24/7 support from our team of South African technicians.</p>
-                    </div>
-                </div>
-            </div>
-        </div>
+                </div>       
+
     </section>
 
     <!-- Technology Section -->
@@ -827,128 +561,61 @@
         </div>
     </section>
 
-    <!-- Packages Section -->
-    <section class="packages-section" id="packages">
-        <div class="container">
-            <div class="section-header" data-aos="fade-up">
-                <h2 class="section-title">Wireless Internet Packages</h2>
-                <p class="section-subtitle">Affordable plans for every need</p>
-            </div>
-            
-            <div class="row">
-                <div class="col-md-4" data-aos="fade-up" data-aos-delay="100">
-                    <div class="package-card">
-                        <h4 class="package-name">Home Basic</h4>
-                        <div class="package-speed">10 Mbps</div>
-                        <div class="package-price">R399<small>/month</small></div>
-                        <ul class="package-features">
-                            <li>Uncapped data</li>
-                            <li>Perfect for browsing & email</li>
-                            <li>Supports 2-3 devices</li>
-                            <li>Free router included</li>
-                            <li>24/7 support</li>
-                        </ul>
-                        <a href="{% url 'register_view' %}?package=home_basic" class="btn cta-button w-100">Sign Up</a>
-                    </div>
-                </div>
-                
-                <div class="col-md-4" data-aos="fade-up" data-aos-delay="200">
-                    <div class="package-card popular">
-                        <span class="popular-badge">POPULAR</span>
-                        <h4 class="package-name">Home Plus</h4>
-                        <div class="package-speed">20 Mbps</div>
-                        <div class="package-price">R599<small>/month</small></div>
-                        <ul class="package-features">
-                            <li>Uncapped data</li>
-                            <li>Great for streaming HD</li>
-                            <li>Supports 5-7 devices</li>
-                            <li>Free router included</li>
-                            <li>Priority support</li>
-                        </ul>
-                        <a href="{% url 'register_view' %}?package=home_plus" class="btn cta-button w-100">Sign Up</a>
-                    </div>
-                </div>
-                
-                <div class="col-md-4" data-aos="fade-up" data-aos-delay="300">
-                    <div class="package-card">
-                        <h4 class="package-name">Business Pro</h4>
-                        <div class="package-speed">50 Mbps</div>
-                        <div class="package-price">R999<small>/month</small></div>
-                        <ul class="package-features">
-                            <li>Uncapped premium data</li>
-                            <li>Ideal for offices</li>
-                            <li>Supports 10+ devices</li>
-                            <li>Advanced router included</li>
-                            <li>Dedicated support</li>
-                        </ul>
-                        <a href="{% url 'register_view' %}?package=business_pro" class="btn cta-button w-100">Sign Up</a>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="text-center mt-5" data-aos="fade-up">
-                <p>Need a custom solution? <a href="#contact" class="text-primary fw-bold">Contact our sales team</a> for enterprise-grade wireless services tailored to your specific requirements.</p>
-            </div>
-        </div>
-    </section>
-
-    <!-- Testimonials Section -->
-    <section class="testimonials-section">
-        <div class="container">
-            <div class="section-header" data-aos="fade-up">
-                <h2 class="section-title">Happy Customers</h2>
-                <p class="section-subtitle">Hear what our wireless internet users have to say</p>
-            </div>
-            
-            <div class="row">
-                <div class="col-md-4" data-aos="fade-up" data-aos-delay="100">
-                    <div class="testimonial-card">
-                        <p class="testimonial-text">After struggling with slow satellite internet for years, NDIO's wireless service has been life-changing. I can now run my online business from my farm without any issues.</p>
-                        <div class="testimonial-author">
-                            <img src="{% static 'images/testimonial4.jpg' %}" alt="Pieter V." class="author-avatar">
-                            <div class="author-info">
-                                <h5>Pieter V.</h5>
-                                <p>Small Business Owner, Limpopo</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="col-md-4" data-aos="fade-up" data-aos-delay="200">
-                    <div class="testimonial-card">
-                        <p class="testimonial-text">The installation was quick and professional. We've had consistent speeds that match what we were promised, which is rare with wireless providers. Very impressed!</p>
-                        <div class="testimonial-author">
-                            <img src="{% static 'images/testimonial5.jpg' %}" alt="Nomvula K." class="author-avatar">
-                            <div class="author-info">
-                                <h5>Nomvula K.</h5>
-                                <p>Teacher, Eastern Cape</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="col-md-4" data-aos="fade-up" data-aos-delay="300">
-                    <div class="testimonial-card">
-                        <p class="testimonial-text">As a remote worker, reliable internet is crucial. NDIO's wireless service has been rock solid for 8 months now, even during bad weather. Their support team is responsive too.</p>
-                        <div class="testimonial-author">
-                            <img src="{% static 'images/testimonial6.jpg' %}" alt="David L." class="author-avatar">
-                            <div class="author-info">
-                                <h5>David L.</h5>
-                                <p>Software Developer, KZN</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
     <!-- CTA Section -->
     <section class="cta-section">
         <div class="container" data-aos="fade-up">
             <h2>Ready for Fast, Reliable Wireless Internet?</h2>
             <p class="lead">Join thousands of South Africans enjoying high-speed connectivity without the cables.</p>
-            <a href="#coverage" class="btn cta-button btn-lg">Check Coverage Now</a>
+        </div>
+    </section>
+
+    <section class="register-section py-5">
+        <div class="content-center" data-aos="fade-up">
+            <h2 class="text-center mb-4">Leave your information with us and we will get back to you</h2>
+            
+            <form method="POST" action="#" class="needs-validation p-4 rounded bg-light" novalidate style="background-color: #f8f9fa;">
+                <div class="row mb-3">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <input type="text" class="form-control" name="name" placeholder="Name" required>
+                            <div class="invalid-feedback">
+                                Please provide your name.
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <input type="text" class="form-control" name="surname" placeholder="Surname" required>
+                            <div class="invalid-feedback">
+                                Please provide your surname.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+    
+                <div class="row mb-3">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <input type="email" class="form-control" name="email" placeholder="Email" required>
+                            <div class="invalid-feedback">
+                                Please provide a valid email.
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <input type="text" class="form-control" name="address" placeholder="Enter Address" required>
+                            <div class="invalid-feedback">
+                                Please provide your address.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="text-center mt-4">
+                    <button type="submit" class="btn btn-warning text-white" style="background-color: #fd7e14; border-color: #fd7e14;">Submit</button>
+                </div>
+            </form>
         </div>
     </section>
 

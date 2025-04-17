@@ -178,6 +178,9 @@
 <!-- Hero Section -->
 <section class="hero">
     <div class="container hero-content text-center">
+        <a href="{% url 'home' %}" class="btn btn-outline-light mb-3">
+            <i class="bi bi-arrow-left-circle"></i> Back to Homepage
+        </a>
         <h1 class="display-4 fw-bold mb-4">Experience NDIO Home-Fibre</h1>
         <p class="lead mb-5">Reliable. Lightning-Fast. Designed for Every African Home.</p>
     </div>
@@ -193,8 +196,14 @@
   
       <!-- Feature 1 -->
       <div class="row align-items-center mb-5">
-        <div class="col-md-6">
-            <img src="{% static 'images/ndio_logo1.png' %}" alt="NDIO Logo" class="footer-logo" width="100%" height="100%">
+        <div class="col-md-2">
+            <img src="{% static 'images/zoom.jpeg' %}" alt="zoom Logo" class="footer-logo" width="100" height="100">
+        </div>
+        <div class="col-md-2">
+            <img src="{% static 'images/netflix_logo.jpeg' %}" alt="Netflix Logo" class="footer-logo" width="100" height="100">
+        </div>
+        <div class="col-md-2">
+            <img src="{% static 'images/skype_logo.jpeg' %}" alt="skype Logo" class="footer-logo" width="100" height="100">
         </div>
         <div class="col-md-6">
           <h4 class="fw-bold">Unmatched Speed & Reliability</h4>
@@ -204,8 +213,14 @@
   
       <!-- Feature 2 -->
       <div class="row align-items-center mb-5 flex-md-row-reverse">
-        <div class="col-md-6">
-          <img src="https://via.placeholder.com/500x300?text=Seamless+Streaming" alt="No Buffering" class="img-fluid rounded-4 shadow">
+        <div class="col-md-2">
+          <img src="{% static 'images/youtube_logo.jpeg' %}" alt="youtube logo" class="img-fluid rounded-4 shadow">
+        </div>
+        <div class="col-md-2">
+            <img src="{% static 'images/teams_logo.jpeg' %}" alt="teams logo" class="img-fluid rounded-4 shadow">
+        </div>
+        <div class="col-md-2">
+            <img src="{% static 'images/gaming.jpeg' %}" alt="twitch logo" class="img-fluid rounded-4 shadow">
         </div>
         <div class="col-md-6">
           <h4 class="fw-bold">No Buffering, No Waiting</h4>
@@ -216,7 +231,7 @@
       <!-- Feature 4 -->
       <div class="row align-items-center mb-5 flex-md-row-reverse">
         <div class="col-md-6">
-          <img src="https://via.placeholder.com/500x300?text=Local+Support" alt="Local Support" class="img-fluid rounded-4 shadow">
+          <img src="{% static 'images/support.jpeg' %}" alt="Local Support" class="rounded-4 shadow" width="600" height="600">
         </div>
         <div class="col-md-6">
           <h4 class="fw-bold">Friendly, Local Support</h4>
@@ -227,7 +242,7 @@
       <!-- Final Call to Action -->
       <div class="text-center mt-5">
         <h5 class="fw-semibold mb-3">Why settle for slow? Step into the fast lane of digital life.</h5>
-        <a href="#" class="btn btn-primary btn-lg rounded-pill px-4">Get NDIO Home Fibre</a>
+        <a href="/home" class="btn btn-lg rounded-pill px-4">Get NDIO Home Fibre</a>
       </div>
     </div>
   </section>
