@@ -124,7 +124,7 @@
         position: relative;
         height: 70vh;
         min-height: 600px;
-        background: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), url("{% static 'images/voip-bg.jpg' %}");
+        background: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), url("{% static 'images/background2.png' %}");
         background-size: cover;
         background-position: center;
         display: flex;
@@ -290,34 +290,6 @@
         margin-bottom: 1rem;
     }
 
-    /* Pricing Section */
-    .pricing-section {
-        padding: 5rem 0;
-        background: linear-gradient(135deg, var(--primary-green), var(--dark-green));
-        color: var(--white);
-    }
-
-    .pricing-card {
-        background: rgba(255,255,255,0.1);
-        backdrop-filter: blur(10px);
-        border-radius: 12px;
-        padding: 2.5rem;
-        margin-bottom: 2rem;
-        transition: var(--transition);
-        height: 100%;
-        border: 1px solid rgba(255,255,255,0.2);
-    }
-
-    .pricing-card:hover {
-        transform: translateY(-5px);
-        background: rgba(255,255,255,0.15);
-    }
-
-    .pricing-card.popular {
-        background: rgba(255,255,255,0.2);
-        border: 1px solid var(--primary-orange);
-        position: relative;
-    }
 
     .popular-badge {
         position: absolute;
@@ -329,94 +301,6 @@
         border-radius: 50px;
         font-size: 0.8rem;
         font-weight: 600;
-    }
-
-    .price {
-        font-size: 3rem;
-        font-weight: 700;
-        margin: 1rem 0;
-    }
-
-    .price small {
-        font-size: 1rem;
-        opacity: 0.8;
-    }
-
-    .pricing-features {
-        list-style: none;
-        padding: 0;
-        margin: 2rem 0;
-    }
-
-    .pricing-features li {
-        margin-bottom: 0.75rem;
-        position: relative;
-        padding-left: 1.5rem;
-    }
-
-    .pricing-features li:before {
-        content: '\f00c';
-        font-family: 'Font Awesome 5 Free';
-        font-weight: 900;
-        position: absolute;
-        left: 0;
-        color: var(--primary-orange);
-    }
-
-    /* Testimonials */
-    .testimonials-section {
-        padding: 5rem 0;
-        background-color: var(--light-gray);
-    }
-
-    .testimonial-card {
-        background: var(--white);
-        border-radius: 12px;
-        padding: 2rem;
-        margin-bottom: 2rem;
-        box-shadow: var(--shadow-sm);
-        position: relative;
-    }
-
-    .testimonial-card:before {
-        content: '"';
-        position: absolute;
-        top: 20px;
-        left: 20px;
-        font-size: 5rem;
-        font-family: Georgia, serif;
-        color: rgba(0,0,0,0.05);
-        line-height: 1;
-    }
-
-    .testimonial-text {
-        position: relative;
-        z-index: 1;
-        font-style: italic;
-        margin-bottom: 1.5rem;
-    }
-
-    .testimonial-author {
-        display: flex;
-        align-items: center;
-    }
-
-    .author-avatar {
-        width: 50px;
-        height: 50px;
-        border-radius: 50%;
-        margin-right: 1rem;
-        object-fit: cover;
-    }
-
-    .author-info h5 {
-        margin-bottom: 0.25rem;
-    }
-
-    .author-info p {
-        opacity: 0.7;
-        font-size: 0.9rem;
-        margin-bottom: 0;
     }
 
     /* CTA Section */
@@ -655,7 +539,7 @@
             <div data-aos="fade-up" data-aos-duration="1000">
                 <h1>Revolutionize Your Business Communications</h1>
                 <p class="lead">NDIO's VoIP solutions deliver crystal-clear voice quality, advanced features, and significant cost savings for businesses of all sizes.</p>
-                <a href="#pricing" class="btn cta-button">Get Started Today</a>
+                <a href="#contact-section" class="btn cta-button">Get Started Today</a>
             </div>
         </div>
     </section>
@@ -669,36 +553,6 @@
             </div>
             
             <div class="row">
-                <div class="col-md-4" data-aos="fade-up" data-aos-delay="100">
-                    <div class="feature-card">
-                        <div class="feature-icon">
-                            <i class="bi bi-currency-dollar"></i>
-                        </div>
-                        <h4 class="feature-title">Cost Savings</h4>
-                        <p>Reduce your phone bills by up to 60% compared to traditional landlines while enjoying unlimited local calls.</p>
-                    </div>
-                </div>
-                
-                <div class="col-md-4" data-aos="fade-up" data-aos-delay="200">
-                    <div class="feature-card">
-                        <div class="feature-icon">
-                            <i class="bi bi-gear"></i>
-                        </div>
-                        <h4 class="feature-title">Advanced Features</h4>
-                        <p>Auto-attendant, call forwarding, voicemail to email, conference calling, and more included at no extra cost.</p>
-                    </div>
-                </div>
-                
-                <div class="col-md-4" data-aos="fade-up" data-aos-delay="300">
-                    <div class="feature-card">
-                        <div class="feature-icon">
-                            <i class="bi bi-phone"></i>
-                        </div>
-                        <h4 class="feature-title">Mobility</h4>
-                        <p>Take your business number anywhere. Make and receive calls from your smartphone, laptop, or desktop.</p>
-                    </div>
-                </div>
-                
                 <div class="col-md-4" data-aos="fade-up" data-aos-delay="100">
                     <div class="feature-card">
                         <div class="feature-icon">
@@ -776,121 +630,25 @@
         </div>
     </section>
 
-    <!-- Pricing Section -->
-    <section class="pricing-section" id="pricing">
+        <!-- Contact Request Section -->
+    <section class="contact-request-section" id="contact-section">
         <div class="container">
             <div class="section-header" data-aos="fade-up">
-                <h2 class="section-title text-white">Simple, Transparent Pricing</h2>
-                <p class="section-subtitle text-white">No hidden fees, no surprises - just great value</p>
+                <h2 class="section-title">Get In Touch With Us</h2>
+                <p class="section-subtitle">Leave your email address and we'll contact you about your communication needs</p>
             </div>
             
-            <div class="row">
-                <div class="col-md-4" data-aos="fade-up" data-aos-delay="100">
-                    <div class="pricing-card">
-                        <h4>Starter</h4>
-                        <p>Perfect for small businesses and startups</p>
-                        <div class="price">R149<small>/user/month</small></div>
-                        <ul class="pricing-features">
-                            <li>Unlimited local calls</li>
-                            <li>100 minutes to mobile</li>
-                            <li>Voicemail to email</li>
-                            <li>Call forwarding</li>
-                            <li>Basic call analytics</li>
-                            <li>24/7 support</li>
-                        </ul>
-                        <a href="{% url 'register_view' %}" class="btn cta-button w-100">Get Started</a>
-                    </div>
-                </div>
-                
-                <div class="col-md-4" data-aos="fade-up" data-aos-delay="200">
-                    <div class="pricing-card popular">
-                        <span class="popular-badge">MOST POPULAR</span>
-                        <h4>Business</h4>
-                        <p>Ideal for growing businesses</p>
-                        <div class="price">R249<small>/user/month</small></div>
-                        <ul class="pricing-features">
-                            <li>Unlimited local calls</li>
-                            <li>300 minutes to mobile</li>
-                            <li>Advanced call routing</li>
-                            <li>Auto-attendant</li>
-                            <li>Conference calling</li>
-                            <li>Detailed analytics</li>
-                            <li>24/7 priority support</li>
-                        </ul>
-                        <a href="{% url 'register_view' %}" class="btn cta-button w-100">Get Started</a>
-                    </div>
-                </div>
-                
-                <div class="col-md-4" data-aos="fade-up" data-aos-delay="300">
-                    <div class="pricing-card">
-                        <h4>Enterprise</h4>
-                        <p>For large organizations</p>
-                        <div class="price">R399<small>/user/month</small></div>
-                        <ul class="pricing-features">
-                            <li>Unlimited local calls</li>
-                            <li>Unlimited mobile minutes</li>
-                            <li>Multi-level auto-attendant</li>
-                            <li>Call recording</li>
-                            <li>CRM integrations</li>
-                            <li>Advanced analytics</li>
-                            <li>Dedicated account manager</li>
-                        </ul>
-                        <a href="{% url 'register_view' %}" class="btn cta-button w-100">Get Started</a>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="text-center mt-5" data-aos="fade-up">
-                <p class="text-white">Need a custom solution? <a href="#contact" class="text-white fw-bold">Contact our sales team</a> for enterprise-grade VoIP services tailored to your specific requirements.</p>
-            </div>
-        </div>
-    </section>
-
-    <!-- Testimonials Section -->
-    <section class="testimonials-section">
-        <div class="container">
-            <div class="section-header" data-aos="fade-up">
-                <h2 class="section-title">What Our Customers Say</h2>
-                <p class="section-subtitle">Businesses across South Africa trust NDIO for their communication needs</p>
-            </div>
-            
-            <div class="row">
-                <div class="col-md-4" data-aos="fade-up" data-aos-delay="100">
-                    <div class="testimonial-card">
-                        <p class="testimonial-text">Switching to NDIO VoIP saved us over 40% on our monthly phone bills while giving us features we never had with our old provider. The call quality is exceptional.</p>
-                        <div class="testimonial-author">
-                            <img src="{% static 'images/testimonial1.jpg' %}" alt="Sarah M." class="author-avatar">
-                            <div class="author-info">
-                                <h5>Sarah M.</h5>
-                                <p>Marketing Agency, Cape Town</p>
-                            </div>
+            <div class="row justify-content-center">
+                <div class="col-md-6" data-aos="fade-up" data-aos-delay="200">
+                    <form id="contactRequestForm" class="contact-form">
+                        <div class="form-group">
+                            <input type="email" class="form-control" id="userEmail" placeholder="Enter your email address" required>
                         </div>
-                    </div>
-                </div>
-                
-                <div class="col-md-4" data-aos="fade-up" data-aos-delay="200">
-                    <div class="testimonial-card">
-                        <p class="testimonial-text">The mobility features have been a game-changer for our sales team. They can now take business calls from anywhere without clients knowing they're not in the office.</p>
-                        <div class="testimonial-author">
-                            <img src="{% static 'images/testimonial2.jpg' %}" alt="James K." class="author-avatar">
-                            <div class="author-info">
-                                <h5>James K.</h5>
-                                <p>IT Solutions, Johannesburg</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="col-md-4" data-aos="fade-up" data-aos-delay="300">
-                    <div class="testimonial-card">
-                        <p class="testimonial-text">NDIO's support team helped us transition our 50+ extensions seamlessly. Their expertise made what we thought would be a complicated process surprisingly simple.</p>
-                        <div class="testimonial-author">
-                            <img src="{% static 'images/testimonial3.jpg' %}" alt="Lindiwe B." class="author-avatar">
-                            <div class="author-info">
-                                <h5>Lindiwe B.</h5>
-                                <p>Law Firm, Durban</p>
-                            </div>
-                        </div>
+                        <br>
+                        <button type="submit" class="btn btn-primary btn-block">Request Contact</button>
+                    </form>
+                    <div id="formSuccess" class="alert alert-success mt-3" style="display:none;">
+                        Thank you! We'll be in touch soon.
                     </div>
                 </div>
             </div>
@@ -902,9 +660,9 @@
         <div class="container" data-aos="fade-up">
             <h2>Ready to Transform Your Business Communications?</h2>
             <p class="lead">Join thousands of South African businesses enjoying reliable, feature-rich VoIP service from NDIO.</p>
-            <a href="{% url 'register_view' %}" class="btn cta-button btn-lg">Sign Up Now</a>
         </div>
     </section>
+    
 
     <!-- Footer -->
     <footer class="footer" id="contact">
