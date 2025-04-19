@@ -16,6 +16,7 @@ urlpatterns = [
     path('wireless/', views.wireless, name='wireless'),
     path('network_cabling/', views.network_cabling, name='network_cabling'),
     path('managed/', views.managed, name='managed'),
+    path('privacy_policy/', views.privacy_policy, name='privacy_policy'),
     path('faqs/', views.faqs, name='faqs'),
     path('register/', views.register_view, name='register_view'),
     path('login_user/', views.login_view, name='login_view'),

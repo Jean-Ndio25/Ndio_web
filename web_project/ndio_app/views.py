@@ -435,6 +435,9 @@ def network_cabling(request):
 def managed(request):
     return render(request, 'ndio_app/managed.html')
 
+def privacy_policy(request):
+    return render(request, 'ndio_app/privacy_policy.html')
+
 def order_details(request):
     """Handles order details submission."""
     referrer_id = request.session.get('referrer')
