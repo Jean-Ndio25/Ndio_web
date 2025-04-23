@@ -221,25 +221,6 @@
         transform: translateY(-3px);
     }
 
-    /* Testimonials */
-    .testimonial-card {
-        background: var(--white);
-        border-radius: 12px;
-        padding: 2rem;
-        box-shadow: var(--shadow-md);
-        margin: 1rem;
-    }
-
-    .testimonial-text {
-        font-style: italic;
-        margin-bottom: 1.5rem;
-    }
-
-    .client-name {
-        font-weight: 600;
-        color: var(--dark-green);
-    }
-
     /* Footer */
     .footer {
         background-color: var(--dark-black);
@@ -413,7 +394,8 @@
                             <li><i class="bi bi-check-circle text-primary me-2"></i> Technology roadmap</li>
                             <li><i class="bi bi-check-circle text-primary me-2"></i> Digital transformation</li>
                             <li><i class="bi bi-check-circle text-primary me-2"></i> Vendor management</li>
-                        </ul>
+                        </ul><br>
+                        <div class="container-fluid items-center"> <button  class="btn btn-primary">Hello</button>   </div>
                     </div>
                 </div>
             </div>
@@ -468,63 +450,6 @@
             <h2 class="display-4 fw-bold text-white mb-4">Ready to Transform Your IT?</h2>
             <p class="lead text-white mb-5">Let's discuss how we can support your business technology needs.</p>
             <a href="#" class="btn btn-primary btn-lg cta-btn">Get Started Today</a>
-        </div>
-    </section>
-
-    <!-- Testimonials -->
-    <section class="py-5 bg-light">
-        <div class="container py-5">
-            <div class="text-center mb-5" data-aos="fade-up">
-                <h2 class="display-4 fw-bold mb-3">What Our Clients Say</h2>
-                <p class="lead text-muted">Trusted by businesses across industries</p>
-            </div>
-
-            <div class="row">
-                <div class="col-md-4" data-aos="fade-up" data-aos-delay="100">
-                    <div class="testimonial-card">
-                        <p class="testimonial-text">"NDIO's managed IT services have transformed our operations. Their proactive approach has reduced our downtime by 90%."</p>
-                        <div class="d-flex align-items-center">
-                            <div class="me-3">
-                                <img src="{% static 'images/client1.jpg' %}" class="rounded-circle" width="50" height="50" alt="Client">
-                            </div>
-                            <div>
-                                <h5 class="mb-0 client-name">Sarah Johnson</h5>
-                                <small class="text-muted">CEO, TechForward</small>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="col-md-4" data-aos="fade-up" data-aos-delay="200">
-                    <div class="testimonial-card">
-                        <p class="testimonial-text">"The cybersecurity solutions provided by NDIO give us peace of mind in an increasingly dangerous digital landscape."</p>
-                        <div class="d-flex align-items-center">
-                            <div class="me-3">
-                                <img src="{% static 'images/client2.jpg' %}" class="rounded-circle" width="50" height="50" alt="Client">
-                            </div>
-                            <div>
-                                <h5 class="mb-0 client-name">Michael Brown</h5>
-                                <small class="text-muted">CFO, FinancialSecure</small>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="col-md-4" data-aos="fade-up" data-aos-delay="300">
-                    <div class="testimonial-card">
-                        <p class="testimonial-text">"Their cloud migration expertise helped us reduce costs by 40% while improving performance and scalability."</p>
-                        <div class="d-flex align-items-center">
-                            <div class="me-3">
-                                <img src="{% static 'images/client3.jpg' %}" class="rounded-circle" width="50" height="50" alt="Client">
-                            </div>
-                            <div>
-                                <h5 class="mb-0 client-name">David Wilson</h5>
-                                <small class="text-muted">CTO, RetailSolutions</small>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
         </div>
     </section>
 
