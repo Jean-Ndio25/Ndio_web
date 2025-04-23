@@ -34,3 +34,10 @@ class MyForm(forms.Form):
     # Other visible fields
     name = forms.CharField(max_length=100)
     email = forms.EmailField()
+
+=== Forms ===
+
+1. VoIP - email only
+2. Wireless Internet - email, name, surname, address
+3. network cabling - email, name, surname, address, description
+4. 

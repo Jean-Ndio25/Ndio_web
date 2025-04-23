@@ -110,6 +110,15 @@ class FAQ(models.Model):
     def __str__(self):
         return self.question
 
+class ServicesContact(models.Model):
+    name = models.CharField(max_length=50, null=True)
+    surname = models.CharField(max_length=50, null=True)
+    email = models.CharField(max_length=100, null=True)
+    address = models.CharField(max_length=100, null=True)
+    service = models.CharField(max_length=100, null=True)
+    company_name = models.CharField(max_length=100, null=True)
+    description = models.CharField(max_length=150, null=True)
+
 class Communication(models.Model):
     MESSAGE_TYPES = [
         ("email", "Email"),

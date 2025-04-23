@@ -576,7 +576,8 @@
         <div class="content-center" data-aos="fade-up">
             <h2 class="text-center mb-4">Request a Free Cabling Consultation</h2>
             
-            <form method="POST" action="#" class="needs-validation p-4 rounded bg-light" novalidate style="background-color: #f8f9fa;">
+            <form method="POST" action="" class="needs-validation p-4 rounded bg-light" novalidate style="background-color: #f8f9fa;">
+            {% csrf_token %}
                 <div class="row mb-3">
                     <div class="col-md-6">
                         <div class="form-group">
@@ -608,8 +609,20 @@
                     <div class="col-md-6">
                         <div class="form-group">
                             <input type="text" class="form-control" name="address" placeholder="Enter Address" required>
+                            <input type="hidden" class="form-control" id="service" value="Network Cabling" name="service" required>
                             <div class="invalid-feedback">
                                 Please provide your address.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row mb-3">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <input type="text" class="form-control" name="company" placeholder="Company Name" required>
+                            <div class="invalid-feedback">
+                                Please provide a Company name.
                             </div>
                         </div>
                     </div>

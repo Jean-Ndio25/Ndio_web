@@ -5,7 +5,7 @@ from django.http import JsonResponse
 from django.shortcuts import render, redirect
 from django.contrib.auth import login, logout
 from django.contrib.auth.forms import AuthenticationForm
-from ndio_app.models import Payment, UserDetail, User, FibreProduct, NetworkProvider, FAQ
+from ndio_app.models import Payment, UserDetail, User, FibreProduct, NetworkProvider, FAQ, ServicesContact
 from .forms import CustomUserCreationForm, PaymentForm, UserDetailForm, OrderForm
 from . import forms
 from django.contrib import messages
@@ -424,12 +424,69 @@ def business_fibre(request):
 
 
 def voip(request):
-    return render(request, 'ndio_app/voip.html')
+    
+    if request.method == "POST":
+        name  = request.POST.get("name")
+        surname = request.POST.get("surname")
+        email = request.POST.get("email")
+        address = request.POST.get("address")
+        company_name = request.POST.get("company")
+        description = request.POST.get("requirements")
+        service = request.POST.get("service")
+        ServicesContact.objects.create(
+            name = name,
+            surname = surname,
+            email = email,
+            address = address,
+            company_name = company_name,
+            description = description,
+            service = service
+        )
+        return render(request, 'ndio_app/voip.html')
+    return render(request, 'ndio_app/voip.html')  
 
 def wireless(request):
-    return render(request, 'ndio_app/wireless.html')
+    if request.method == "POST":
+        name = request.POST.get("name")
+        surname = request.POST.get("surname")
+        address = request.POST.get("address")
+        email = request.POST.get("email")
+        company_name = request.POST.get("company")
+        description = request.POST.get("requirements")
+        service = request.POST.get("service")
+        ServicesContact.objects.create(
+            name = name,
+            surname = surname,
+            address = address,
+            email = email,
+            company_name = company_name,
+            description = description,
+            service = service
+        )
+        return render(request, 'ndio_app/wireless.html')
+    
+    return render(request, 'ndio_app/wireless.html')  
 
 def network_cabling(request):
+    if request.method == "POST":
+        name = request.POST.get("name")
+        surname = request.POST.get("surname")
+        address = request.POST.get("address")
+        email = request.POST.get("email")
+        company_name  = request.POST.get("company")
+        description = request.POST.get("requirements")
+        service = request.POST.get("service")
+        ServicesContact.objects.create(
+            name = name,
+            surname = surname,
+            address = address,
+            email = email,
+            company_name = company_name,
+            description = description,
+            service = service
+        )
+        return render(request, 'ndio_app/network_cabling.html')
+    
     return render(request, 'ndio_app/network_cabling.html')
 
 def managed(request):
